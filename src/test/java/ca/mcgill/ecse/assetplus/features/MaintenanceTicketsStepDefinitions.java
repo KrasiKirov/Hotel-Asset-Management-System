@@ -1,6 +1,7 @@
 package ca.mcgill.ecse.assetplus.features;
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 import ca.mcgill.ecse.assetplus.model.AssetPlus;
+import ca.mcgill.ecse.assetplus.model.AssetType;
 import ca.mcgill.ecse.assetplus.model.HotelStaff;
 import ca.mcgill.ecse.assetplus.model.MaintenanceNote;
 import ca.mcgill.ecse.assetplus.model.MaintenanceTicket;
@@ -53,20 +54,18 @@ public class MaintenanceTicketsStepDefinitions {
     throw new io.cucumber.java.PendingException();
   }
   /**
-   * 3
+   * @author Krasimir Kirov
    * @param dataTable
    */
   @Given("the following asset types exist in the system")
   public void the_following_asset_types_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-    // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+    List<Map<String, String>> rows = dataTable.asMaps();
+    for (var row : rows) {
+      String name = row.get("name");
+      int expectedLifeSpan = Integer.parseInt(row.get("expectedLifeSpan"));
+      ap.addAssetType(name, expectedLifeSpan);
+    }
   }
   /**
    * 4
@@ -153,9 +152,12 @@ public class MaintenanceTicketsStepDefinitions {
    */
   @Given("ticket {string} is marked as {string}")
   public void ticket_is_marked_as(String string, String string2) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
-  }
+    int ticketId = Integer.parseInt(string);
+    MaintenanceTicket thisTicket = MaintenanceTicket.getWithId(ticketId);
+    if (!(thisTicket.getStatusFullName().equals(string2))){
+      thisTicket.setStatus(Status aStatus)
+    }
+    }
   /**
    * 4
    */
